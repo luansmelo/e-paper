@@ -18,9 +18,12 @@ export class DeleteDocumentUseCase {
             throw new NotFoundException("Document not found");
         }
 
+        const bucket = process.env.MINIO_BUCKET as string
+        const oldFileKey = document.fileUrl.split(`${bucket}/`)[1];
+
         const deleteObjectCommand = new DeleteObjectCommand({
-            Bucket: process.env.MINIO_BUCKET as string,
-            Key: document.name,
+            Bucket: bucket,
+            Key: oldFileKey,
         });
 
         await s3.send(deleteObjectCommand);

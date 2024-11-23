@@ -1,5 +1,4 @@
-import { pgTable, text, integer, timestamp, uuid, pgEnum } from 'drizzle-orm/pg-core';
-export const documentStatusEnum = pgEnum('document_status', ['pending', 'completed', 'failed']);
+import { pgTable, text, integer, timestamp, uuid } from 'drizzle-orm/pg-core';
 
 export const documents = pgTable('documents', {
     id: uuid('id').primaryKey().defaultRandom(),
@@ -10,7 +9,6 @@ export const documents = pgTable('documents', {
     totalTaxValue: integer('total_tax_value'),
     netValue: integer('net_value'),
     fileUrl: text('fileUrl'),
-    status: documentStatusEnum('status').notNull().default('pending'),
     createdAt: timestamp('created_at').defaultNow(),
     updatedAt: timestamp('updated_at').defaultNow(),
 });

@@ -1,6 +1,5 @@
-import { AddDocumentDto } from '@/application/dtos/request/add-document.dto';
-import { DocumentFilter } from '@/application/dtos/request/filter.document.dto';
-import { DocumentResponse } from '@/application/dtos/response/document.response.dto';
+import { DocumentResponse } from '@/application/dtos';
+import { AddDocumentDto, DocumentFilter } from '@/application/dtos/request';
 import { Document } from '@/domain/entities/document.entity';
 import { AddDocumentRepository } from '@/domain/repositories/add-document';
 import { DeleteDocumentRepository } from '@/domain/repositories/delete-document';
@@ -13,12 +12,11 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class InMemoryDocumentRepository
   implements
-    AddDocumentRepository,
-    LoadDocumentByIdRepository,
-    LoadDocumentsRepository,
-    DeleteDocumentRepository,
-    UpdateDocumentByIdRepository
-{
+  AddDocumentRepository,
+  LoadDocumentByIdRepository,
+  LoadDocumentsRepository,
+  DeleteDocumentRepository,
+  UpdateDocumentByIdRepository {
   private documents: Document[] = [];
 
   async add(data: AddDocumentDto): Promise<Document> {
@@ -45,7 +43,7 @@ export class InMemoryDocumentRepository
 
     if (filters.issuer) {
       filteredDocuments = filteredDocuments.filter((doc) =>
-        doc.issuer?.toLowerCase().includes(filters.issuer.toLowerCase()),
+        doc.issuer?.toLowerCase().includes(filters.issuer!.toLowerCase()),
       );
     }
 

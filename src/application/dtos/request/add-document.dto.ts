@@ -1,9 +1,4 @@
-import { IsString } from 'class-validator';
+import { AddDocumentSchema } from "@/application/schemas/document.schema";
+import { createZodDto } from "nestjs-zod";
 
-export class AddDocumentDto {
-  @IsString()
-  origin: string;
-
-  @IsString()
-  type: string;
-}
+export class AddDocumentDto extends createZodDto(AddDocumentSchema) { }

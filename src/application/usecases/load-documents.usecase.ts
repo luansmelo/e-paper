@@ -1,8 +1,7 @@
 import { LoadDocumentsRepository } from "@/domain/repositories/load-documents";
 import { Injectable } from "@nestjs/common";
-import { DocumentResponse } from "../dtos/response/document.response.dto";
-import { DocumentFilter } from "../dtos/request/filter.document.dto";
-
+import { DocumentFilter } from "../dtos/request";
+import { DocumentResponse } from "../dtos";
 
 @Injectable()
 export class LoadDocumentsUseCase {

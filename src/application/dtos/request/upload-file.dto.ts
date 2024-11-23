@@ -1,3 +1,3 @@
 export class UploadFileDto {
-    file: Express.Multer.File;
+    file!: Express.Multer.File;
 }

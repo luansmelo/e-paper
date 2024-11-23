@@ -1,34 +1,28 @@
 export class Document {
-    id: string;
+    id!: string;
     name?: string;
-    origin: string;
-    type: string;
+    origin!: string;
+    type!: string;
     issuer?: string;
     totalTaxValue?: number;
     netValue?: number;
     fileUrl?: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt!: Date;
+    updatedAt!: Date;
 
-    constructor(
-        id: string,
-        name: string,
-        origin: string,
-        type: string,
-        issuer: string,
-        totalTaxValue: number,
-        netValue: number,
-        createdAt: Date,
-        updatedAt: Date,
-    ) {
-        this.id = id;
-        this.name = name;
-        this.origin = origin;
-        this.type = type;
-        this.issuer = issuer;
-        this.totalTaxValue = totalTaxValue;
-        this.netValue = netValue;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    constructor(data: Partial<Document>) {
+        Object.assign(this, {
+            id: '',
+            name: '',
+            origin: '',
+            type: '',
+            issuer: '',
+            totalTaxValue: 0,
+            netValue: 0,
+            fileUrl: '',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            ...data,
+        });
     }
 }

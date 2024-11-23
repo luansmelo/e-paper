@@ -1,8 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import * as Joi from '@hapi/joi';
+import z from 'zod';
 import { DocumentController } from './presentation/controllers/document.controller';
 import { DocumentModule } from './infrastructure/ioc/document.module';
+import { APP_PIPE } from '@nestjs/core';
+import { ZodValidationPipe } from 'nestjs-zod';
+
+const envSchema = z.object({
+  DATABASE_URL: z.string().url(),
+  MINIO_ACCESS_KEY: z.string(),
+  MINIO_SECRET_KEY: z.string(),
+  MINIO_ENDPOINT: z.string().url(),
+  MINIO_BUCKET: z.string(),
+})
 
 @Module({
   controllers: [DocumentController],
@@ -11,14 +21,20 @@ import { DocumentModule } from './infrastructure/ioc/document.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
-      validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().uri().required(),
-        MINIO_ACCESS_KEY: Joi.string().required(),
-        MINIO_SECRET_KEY: Joi.string().required(),
-        MINIO_ENDPOINT: Joi.string().uri().required(),
-        MINIO_BUCKET: Joi.string().required(),
-      }),
+      validate: (config) => {
+        const result = envSchema.safeParse(config);
+        if (!result.success) {
+          throw new Error(`Config validation error: ${result.error.message}`);
+        }
+        return result.data;
+      },
     }),
   ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe,
+    },
+  ]
 })
 export class AppModule { }

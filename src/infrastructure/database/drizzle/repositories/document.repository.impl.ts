@@ -1,16 +1,14 @@
-import { AddDocumentDto } from 'src/application/dtos/request/add-document.dto';
 import { DrizzleService } from '../drizzle.service';
 import { AddDocumentRepository } from 'src/domain/repositories/add-document';
 import { Document } from 'src/domain/entities/document.entity';
 import { Injectable } from '@nestjs/common';
 import { documents } from '../schemas/schema';
 import { LoadDocumentByIdRepository } from 'src/domain/repositories/load-document-by-id';
-import { and, asc, desc, eq, gte, ilike, lte, sql } from 'drizzle-orm';
+import { and, AnyColumn, asc, desc, eq, gte, ilike, lte, sql } from 'drizzle-orm';
 import { LoadDocumentsRepository } from 'src/domain/repositories/load-documents';
-import { DocumentResponse } from 'src/application/dtos/response/document.response.dto';
 import { DeleteDocumentRepository } from 'src/domain/repositories/delete-document';
-import { DocumentFilter } from 'src/application/dtos/request/filter.document.dto';
 import { UpdateDocumentByIdRepository } from 'src/domain/repositories/update-document';
+import { AddDocumentDto, DocumentFilter, DocumentResponse } from '@/application/dtos';
 
 @Injectable()
 export class DrizzleDocumentRepositoryImpl implements
@@ -27,7 +25,7 @@ export class DrizzleDocumentRepositoryImpl implements
             .insert(documents)
             .values(data)
             .returning();
-        return document;
+        return document as Document;
     }
 
     async loadById(id: string): Promise<Document> {
@@ -36,7 +34,7 @@ export class DrizzleDocumentRepositoryImpl implements
             .from(documents)
             .where(eq(documents.id, id))
 
-        return document;
+        return document as Document;
     }
 
     async loadAll(filters: DocumentFilter): Promise<DocumentResponse> {
@@ -58,15 +56,21 @@ export class DrizzleDocumentRepositoryImpl implements
         const conditions = [];
         if (type) conditions.push(eq(documents.type, type));
         if (issuer) conditions.push(ilike(documents.issuer, `%${issuer}%`));
-        if (createdAtStart) conditions.push(gte(documents.createdAt, createdAtStart));
-        if (createdAtEnd) conditions.push(lte(documents.createdAt, createdAtEnd));
+        if (createdAtStart) conditions.push(gte(documents.createdAt, new Date(createdAtStart)));
+        if (createdAtEnd) conditions.push(lte(documents.createdAt, new Date(createdAtEnd)));
         if (totalTaxValueMin) conditions.push(gte(documents.totalTaxValue, totalTaxValueMin));
         if (totalTaxValueMax) conditions.push(lte(documents.totalTaxValue, totalTaxValueMax));
         if (netValueMin) conditions.push(gte(documents.netValue, netValueMin));
         if (netValueMax) conditions.push(lte(documents.netValue, netValueMax));
 
-        const validSortColumns = ['createdAt', 'updatedAt', 'netValue', 'totalTaxValue'];
-        const sortColumn = validSortColumns.includes(sortBy) ? documents[sortBy] : documents.createdAt;
+        const sortColumnMap: Record<"createdAt" | "updatedAt" | "netValue" | "totalTaxValue", AnyColumn> = {
+            createdAt: documents.createdAt,
+            updatedAt: documents.updatedAt,
+            netValue: documents.netValue,
+            totalTaxValue: documents.totalTaxValue,
+        };
+
+        const sortColumn = sortColumnMap[sortBy as keyof typeof sortColumnMap] || documents.createdAt;
         const orderDirection = sortOrder.toLowerCase() === 'desc' ? desc(sortColumn) : asc(sortColumn);
 
         const rows = await this.drizzleService.db
@@ -77,15 +81,16 @@ export class DrizzleDocumentRepositoryImpl implements
             .limit(Number(pageSize))
             .offset((page - 1) * Number(pageSize));
 
-        const totalItems = Number(rows.length);
+        const totalItems = rows.length;
         const totalPages = Math.ceil(totalItems / pageSize);
 
         return {
-            data: rows,
+            data: rows as Document[],
             totalItems,
             totalPages,
         };
     }
+
 
     async deleteById(id: string): Promise<void> {
         await this.drizzleService.db.delete(documents).where(eq(documents.id, id))
@@ -98,6 +103,6 @@ export class DrizzleDocumentRepositoryImpl implements
             .where(eq(documents.id, id))
             .returning();
 
-        return document;
+        return document as Document;
     }
 }

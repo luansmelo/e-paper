@@ -1,7 +1,7 @@
 import { AddDocumentRepository } from "@/domain/repositories/add-document";
-import { AddDocumentDto } from "../dtos/request/add-document.dto";
 import { Injectable } from "@nestjs/common";
 import { Document } from "@/domain/entities/document.entity";
+import { AddDocumentDto } from "../dtos";
 
 @Injectable()
 export class AddDocumentUseCase {

@@ -11,10 +11,6 @@ describe('UpdateDocumentUseCase', () => {
         useCase = new UpdateDocumentUseCase(repository, repository);
     });
 
-    afterEach(() => {
-        repository = null;
-    })
-
     it('should update a document successfully', async () => {
         const document = await repository.add({ origin: 'system', type: 'report' });
         const updates = { type: 'updated-type' };
@@ -24,7 +20,7 @@ describe('UpdateDocumentUseCase', () => {
         const result = await useCase.execute(document.id, updates);
 
         expect(result.type).toEqual(updates.type);
-        expect(new Date(result.updatedAt).getTime()).toBeGreaterThan(new Date(document.updatedAt).getTime());
+        expect(new Date(result.updatedAt!).getTime()).toBeGreaterThan(new Date(document.updatedAt!).getTime());
     });
 
     it('should throw NotFoundException if document is not found', async () => {

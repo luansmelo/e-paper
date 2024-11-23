@@ -6,8 +6,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { NestControllerInterface, TsRest, TsRestRequest } from '@ts-rest/nest';
 
 @Controller()
-export class DocumentController
-    implements NestControllerInterface<typeof documentContract> {
+export class DocumentController implements NestControllerInterface<typeof documentContract> {
     constructor(
         private readonly addDocumentUseCase: AddDocumentUseCase,
         private readonly uploadDocumentUseCase: UploadFileUseCase,
@@ -24,12 +23,12 @@ export class DocumentController
         const data = await this.addDocumentUseCase.execute(body);
 
         return {
-            status: 201,
+            status: 201 as const,
             body: {
                 message: 'Documento criado com sucesso!',
                 data,
             },
-        } as const;
+        };
     }
 
     @TsRest(documentContract.uploadFile)
@@ -42,18 +41,18 @@ export class DocumentController
         const data = await this.uploadDocumentUseCase.execute(params.documentId, file);
 
         return {
-            status: 200,
+            status: 200 as const,
             body: {
                 message: 'Arquivo enviado com sucesso!',
                 data,
             },
-        } as const;
+        }
     }
 
     @TsRest(documentContract.loadById)
     async loadById(@TsRestRequest() { params }: { params: { id: string } }) {
         const data = await this.loadDocument.execute(params.id);
-        return { status: 200, body: data } as const;
+        return { status: 200 as const, body: data }
     }
 
     @TsRest(documentContract.loadAll)
@@ -61,7 +60,14 @@ export class DocumentController
         @TsRestRequest() { query }: { query: DocumentFilter }
     ) {
         const data = await this.loadDocuments.execute(query);
-        return { status: 200, body: data } as const;
+        return {
+            status: 200 as const,
+            body: {
+                data: data.data,
+                totalPages: data.totalPages,
+                totalItems: data.totalItems,
+            },
+        }
     }
 
     @TsRest(documentContract.deleteDocument)
@@ -69,22 +75,27 @@ export class DocumentController
         @TsRestRequest() { params }: { params: { id: string } }
     ) {
         await this.deleteUseCase.execute(params.id);
-        return { status: 200, body: null } as const;
+        return {
+            status: 200 as const,
+            body: {
+                message: 'Documento removido com sucesso!'
+            }
+        }
     }
 
     @TsRest(documentContract.updateDocument)
     async updateDocument(
-        @TsRestRequest() { params, body }:
-            {
-                params: { id: string }, body: UpdateDocumentDto
-            }
+        @TsRestRequest() { params, body }: {
+            params: { id: string }, body: UpdateDocumentDto
+        }
     ) {
         const data = await this.updateUseCase.execute(params.id, body);
         return {
-            status: 200, body: {
+            status: 200 as const,
+            body: {
                 message: 'Arquivo enviado com sucesso!',
                 data,
             },
-        } as const;
+        }
     }
 }

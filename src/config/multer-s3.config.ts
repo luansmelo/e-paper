@@ -6,8 +6,8 @@ dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 export const s3 = new S3Client({
     region: process.env.MINIO_BUCKET as string,
     credentials: {
-        accessKeyId: process.env.MINIO_ACCESS_KEY,
-        secretAccessKey: process.env.MINIO_SECRET_KEY,
+        accessKeyId: process.env.MINIO_ACCESS_KEY as string,
+        secretAccessKey: process.env.MINIO_SECRET_KEY as string,
     },
     endpoint: process.env.MINIO_ENDPOINT,
     forcePathStyle: true,
@@ -20,7 +20,7 @@ const initializeBucket = async () => {
         await s3.send(new HeadBucketCommand({ Bucket: bucketName }));
         console.log(`Bucket "${bucketName}" já existe.`);
     } catch (error) {
-        if (error.name === 'NotFound') {
+        if ((error as any).name === 'NotFound') {
             console.log(`Criando bucket "${bucketName}"...`);
             await s3.send(new CreateBucketCommand({ Bucket: bucketName }));
 

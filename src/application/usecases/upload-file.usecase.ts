@@ -36,9 +36,8 @@ export class UploadFileUseCase {
         }
 
         const uuid = uuidv4();
-        const fileExtension = file.mimetype.split('/')[1];
         const filename = `${uuid}-${file.originalname}`;
-        const fileKey = `uploads/${filename}.${fileExtension}`;
+        const fileKey = `uploads/${filename}`;
 
         const command = new PutObjectCommand({
             Bucket: bucket,

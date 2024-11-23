@@ -76,6 +76,7 @@ O Swagger foi configurado utilizando os contratos definidos com o **ts-rest**, g
 3. **Uso do `ts-rest`:** Simplificação da definição de rotas e contratos com **ts-rest**, alinhando documentação, tipos e validação.
 4. **Melhoria na Estrutura:** A lógica de aplicação foi reorganizada para aproveitar melhor o poder do **nestjs-zod** e do **ts-rest**.
 5. **Sincronização de Tipos:** Eliminação de redundância entre os DTOs e validações através da inferência automática com o **zod**.
+```
 
 ## **Rotas e Estruturas**
 Abaixo estão as rotas da API, com os dados esperados e retornados em formato **JSON**:

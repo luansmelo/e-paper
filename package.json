@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "generate:migration": "drizzle-kit generate:pg",
-    "run:migration": "drizzle-kit up"
+    "run:migration": "drizzle-kit push"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.698.0",

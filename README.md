@@ -44,7 +44,7 @@ O projeto utiliza dois arquivos `.env`:
 PORT=3000
 
 # Configuração do Banco de Dados
-DATABASE_URL=postgres://postgres:postgres@db:5432/e-paper_
+DATABASE_URL=postgres://postgres:epap3r@db:5432/e-paper
 
 # Configuração do MinIO
 MINIO_ACCESS_KEY=admin

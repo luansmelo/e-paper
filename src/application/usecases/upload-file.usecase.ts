@@ -28,7 +28,7 @@ export class UploadFileUseCase {
             const oldFileKey = document.fileUrl.split(`${bucket}/`)[1];
 
             const deleteObjectCommand = new DeleteObjectCommand({
-                Bucket: process.env.MINIO_BUCKET as string,
+                Bucket: bucket,
                 Key: oldFileKey,
             });
     

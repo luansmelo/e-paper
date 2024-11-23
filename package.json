@@ -2,7 +2,7 @@
   "name": "e-paper",
   "version": "0.0.1",
   "description": "E-paper application for document management",
-  "author": "Your Name <your.email@example.com>",
+  "author": "e-paper",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

@@ -19,14 +19,17 @@ export class DeleteDocumentUseCase {
         }
 
         const bucket = process.env.MINIO_BUCKET as string
-        const oldFileKey = document.fileUrl.split(`${bucket}/`)[1];
 
-        const deleteObjectCommand = new DeleteObjectCommand({
-            Bucket: bucket,
-            Key: oldFileKey,
-        });
+        if (document.fileUrl) {
+            const oldFileKey = document.fileUrl.split(`${bucket}/`)[1];
 
-        await s3.send(deleteObjectCommand);
+            const deleteObjectCommand = new DeleteObjectCommand({
+                Bucket: bucket,
+                Key: oldFileKey,
+            });
+
+            await s3.send(deleteObjectCommand);
+        }
 
         await this.repository.deleteById(document.id);
     }

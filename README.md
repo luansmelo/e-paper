@@ -163,7 +163,7 @@ Abaixo estão as rotas da API, com os dados esperados e retornados em formato **
     "netValueMin": 0,
     "netValueMax": 0,
     "sortBy": "string",
-    "sortOrder": "asc | desc"
+    "sortOrder": "asc | desc",
     "page": 1,
     "pageSize": 10
   }

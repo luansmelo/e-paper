@@ -20,12 +20,13 @@ export class InMemoryDocumentRepository
   private documents: Document[] = [];
 
   async add(data: AddDocumentDto): Promise<Document> {
-    const document: Document = {
+    const document = {
       id: uuidv4(),
       createdAt: new Date(),
       updatedAt: new Date(),
       ...data,
-    };
+    } as Document;
+
     this.documents.push(document);
     return document;
   }

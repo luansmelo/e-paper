@@ -74,7 +74,7 @@ export const DocumentSchema = z.object({
     description: 'ID único do documento',
     example: '123e4567-e89b-12d3-a456-426614174000',
   }),
-  name: z.string().optional().openapi({
+  name: z.string().nullable().openapi({
     description: 'Nome do documento',
     example: 'Relatório Anual',
   }),
@@ -86,19 +86,19 @@ export const DocumentSchema = z.object({
     description: 'Tipo do documento (ex: relatório, nota fiscal)',
     example: 'relatório',
   }),
-  issuer: z.string().optional().openapi({
+  issuer: z.string().nullable().openapi({
     description: 'Emitente do documento',
     example: 'Empresa X',
   }),
-  totalTaxValue: z.number().positive('Valor total dos impostos deve ser positivo').optional().openapi({
+  totalTaxValue: z.number().positive('Valor total dos impostos deve ser positivo').nullable().openapi({
     description: 'Valor total dos impostos',
     example: 200.5,
   }),
-  netValue: z.number().positive('Valor líquido deve ser positivo').optional().openapi({
+  netValue: z.number().positive('Valor líquido deve ser positivo').nullable().openapi({
     description: 'Valor líquido',
     example: 1800.0,
   }),
-  fileUrl: z.string().url('URL do arquivo deve ser válida').optional().openapi({
+  fileUrl: z.string().url('URL do arquivo deve ser válida').nullable().openapi({
     description: 'URL do arquivo associado ao documento',
     example: 'http://localhost:9000/bucket/uploads/file.pdf',
   }),

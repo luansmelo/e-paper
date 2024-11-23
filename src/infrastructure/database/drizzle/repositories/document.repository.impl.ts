@@ -103,6 +103,6 @@ export class DrizzleDocumentRepositoryImpl implements
             .where(eq(documents.id, id))
             .returning();
 
-        return document as Document;
+        return document;
     }
 }

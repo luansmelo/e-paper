@@ -12,9 +12,7 @@ async function bootstrap() {
   const PORT = config.get<number>('PORT') || 3000
   const ENVERIOMENT = config.get<string>('NODE_ENV') || 'development'
 
-  app.enableCors({
-    origin: '*',
-  });
+  app.enableCors();
 
   configureSwagger(app);
   configureGlobalPipes(app);

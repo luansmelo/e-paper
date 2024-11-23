@@ -1,14 +1,14 @@
 export class Document {
     id!: string;
-    name?: string;
+    name!: string | null;
     origin!: string;
     type!: string;
-    issuer?: string;
-    totalTaxValue?: number;
-    netValue?: number;
-    fileUrl?: string;
-    createdAt!: Date;
-    updatedAt!: Date;
+    issuer!: string | null;
+    totalTaxValue!: number | null;
+    netValue!: number | null;
+    fileUrl!: string | null;
+    createdAt!: Date | null;
+    updatedAt!: Date | null;
 
     constructor(data: Partial<Document>) {
         Object.assign(this, {

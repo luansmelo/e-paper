@@ -21,6 +21,10 @@ Um sistema de gerenciamento de documentos, desenvolvido com **NestJS**, utilizan
 - **MinIO** (Armazenamento de Arquivos)
 - **Drizzle ORM** (Gerenciamento de Banco de Dados)
 - **Docker** e **Docker Compose**
+- **Swagger** (Documentação da API)
+- **ts-rest** (Rotas e Contratos)
+- **zod** (Validação e Tipagem)
+- **nestjs-zod** (Criação de DTOs e validação com Zod)
 
 ## **Requisitos**
 1. **Node.js** e **npm** (opcional, se for rodar localmente).
@@ -57,6 +61,21 @@ MINIO_BUCKET=e-paper
    ```bash
    docker-compose up
    ```
+
+## **Swagger**
+Acesse a documentação da API no navegador após iniciar o projeto:
+```
+http://localhost:3000/api  
+
+### **Configuração do Swagger**
+O Swagger foi configurado utilizando os contratos definidos com o **ts-rest**, garantindo que os endpoints e tipos sejam sincronizados automaticamente.
+
+## **Melhorias Realizadas**
+1. **Integração com Swagger:** Configurada a documentação da API no endpoint `/api` utilizando os contratos do **ts-rest** e validações com **zod**.
+2. **Validação com `nestjs-zod`:** DTOs e validações centralizadas utilizando **zod**, garantindo consistência entre os tipos e validação em tempo de execução.
+3. **Uso do `ts-rest`:** Simplificação da definição de rotas e contratos com **ts-rest**, alinhando documentação, tipos e validação.
+4. **Melhoria na Estrutura:** A lógica de aplicação foi reorganizada para aproveitar melhor o poder do **nestjs-zod** e do **ts-rest**.
+5. **Sincronização de Tipos:** Eliminação de redundância entre os DTOs e validações através da inferência automática com o **zod**.
 
 ## **Rotas e Estruturas**
 Abaixo estão as rotas da API, com os dados esperados e retornados em formato **JSON**:

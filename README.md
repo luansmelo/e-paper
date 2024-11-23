@@ -135,20 +135,16 @@ Abaixo estão as rotas da API, com os dados esperados e retornados em formato **
 - **Query Params:**
   ```json
   {
-    "data": [
-      {
-        "type": "string",
-        "issuer": "string",
-        "createdAtStart": "2024-11-23T00:00:00.000Z",
-        "createdAtEnd": "2024-11-23T00:00:00.000Z",
-        "totalTaxValueMin": 0,
-        "totalTaxValueMax": 0,
-        "netValueMin": 0,
-        "netValueMax": 0,
-        "sortBy": "string",
-        "sortOrder": "asc | desc"
-      }
-    ],
+    "type": "string",
+    "issuer": "string",
+    "createdAtStart": "2024-11-23T00:00:00.000Z",
+    "createdAtEnd": "2024-11-23T00:00:00.000Z",
+    "totalTaxValueMin": 0,
+    "totalTaxValueMax": 0,
+    "netValueMin": 0,
+    "netValueMax": 0,
+    "sortBy": "string",
+    "sortOrder": "asc | desc"
     "page": 1,
     "pageSize": 10
   }

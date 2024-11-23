@@ -25,7 +25,7 @@ export class DrizzleDocumentRepositoryImpl implements
             .insert(documents)
             .values(data)
             .returning();
-        return document as Document;
+        return document
     }
 
     async loadById(id: string): Promise<Document> {
@@ -34,7 +34,7 @@ export class DrizzleDocumentRepositoryImpl implements
             .from(documents)
             .where(eq(documents.id, id))
 
-        return document as Document;
+        return document
     }
 
     async loadAll(filters: DocumentFilter): Promise<DocumentResponse> {

@@ -18,7 +18,6 @@ const initializeBucket = async () => {
 
     try {
         await s3.send(new HeadBucketCommand({ Bucket: bucketName }));
-        console.log(`Bucket "${bucketName}" já existe.`);
     } catch (error) {
         if ((error as any).name === 'NotFound') {
             console.log(`Criando bucket "${bucketName}"...`);

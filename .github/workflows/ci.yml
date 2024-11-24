@@ -16,22 +16,15 @@ jobs:
     services:
       postgres:
         image: postgres:15
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U ${{ secrets.POSTGRES_USER }}"
+          --health-cmd="pg_isready -U postgres"  # Usar valor padrão (sem secrets)
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
       minio:
         image: minio/minio
-        env:
-          MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
-          MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
         ports:
           - 9000:9000
         command: server /data --console-address ":9001"
@@ -55,6 +48,8 @@ jobs:
         env:
           DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
           MINIO_ENDPOINT: http://localhost:9000
+          MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+          MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
         run: npm run test:unit
 
   deploy:

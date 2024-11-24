@@ -63,11 +63,37 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Ensure DockerHub Secrets are Present
+      - name: Debug Secrets
         run: |
-          if [ -z "${{ secrets.DOCKER_USERNAME }}" ] || [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
-            echo "Error: DockerHub credentials are missing."
-            exit 1
+          echo "Verificando secrets carregados:"
+          if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
+            echo "DOCKER_USERNAME não encontrado."
+          else
+            echo "DOCKER_USERNAME carregado."
+          fi
+
+          if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
+            echo "DOCKER_PASSWORD não encontrado."
+          else
+            echo "DOCKER_PASSWORD carregado."
+          fi
+
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "SSH_PRIVATE_KEY não encontrado."
+          else
+            echo "SSH_PRIVATE_KEY carregado."
+          fi
+
+          if [ -z "${{ secrets.SERVER_HOST }}" ]; then
+            echo "SERVER_HOST não encontrado."
+          else
+            echo "SERVER_HOST carregado."
+          fi
+
+          if [ -z "${{ secrets.SERVER_USER }}" ]; then
+            echo "SERVER_USER não encontrado."
+          else
+            echo "SERVER_USER carregado."
           fi
 
       - name: Login to DockerHub

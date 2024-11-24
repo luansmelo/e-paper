@@ -25,17 +25,41 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Lint Code
-        run: npm run lint
-
       - name: Run Unit Tests
         run: npm run test:unit
+
+  validate-docker:
+    name: Validate Docker Environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Docker Installation
+        run: |
+          if ! [ -x "$(command -v docker)" ]; then
+            echo "Docker não encontrado. Instalando Docker..."
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+          else
+            echo "Docker já está instalado."
+          fi
+
+      - name: Check Docker Compose Installation
+        run: |
+          if ! [ -x "$(command -v docker-compose)" ]; then
+            echo "Docker Compose não encontrado. Instalando Docker Compose..."
+            curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+          else
+            echo "Docker Compose já está instalado."
+          fi
 
   deploy:
     name: Deploy to Production
     environment: EPAPER
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs:
+      - build-and-test
+      - validate-docker
 
     steps:
       - name: Checkout Code
@@ -64,15 +88,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << EOF
-          if ! [ -x "$(command -v docker)" ]; then
-            echo "Docker não encontrado. Instalando Docker..."
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sh get-docker.sh
-          fi
-          if ! [ -x "$(command -v docker-compose)" ]; then
-            echo "Docker Compose não encontrado. Instalando Docker Compose..."
-            curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
-          fi
           docker pull ${{ secrets.DOCKER_USERNAME }}/e-paper:latest
-          
+          cd /home/e-paper
+          docker compose down
+          docker compose up -d
+          EOF

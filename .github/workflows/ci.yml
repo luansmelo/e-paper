@@ -19,7 +19,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres"  # Usar valor padrão (sem secrets)
+          --health-cmd="pg_isready -U postgres"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
@@ -27,7 +27,6 @@ jobs:
         image: minio/minio
         ports:
           - 9000:9000
-        command: server /data --console-address ":9001"
 
     steps:
       - name: Checkout Code
